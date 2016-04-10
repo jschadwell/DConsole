@@ -1,6 +1,7 @@
 package com.furusystems.dconsole2 {
 	import com.furusystems.dconsole2.core.gui.debugdraw.DebugDraw;
 	import com.furusystems.dconsole2.core.gui.maindisplay.ConsoleView;
+	import com.furusystems.dconsole2.core.plugins.IDConsolePlugin;
 	import com.furusystems.messaging.pimp.PimpCentral;
 	import flash.events.Event;
 	
@@ -122,6 +123,11 @@ package com.furusystems.dconsole2 {
 		function get messaging():PimpCentral;
 		
 		/**
+		 * Get the full console log as a string
+		 */
+		function getLogString():String;
+		
+		/**
 		 * Print the stack trace up until where this method was called
 		 */
 		function stackTrace():void;
@@ -130,6 +136,13 @@ package com.furusystems.dconsole2 {
 		 * Update the current scope to reflect any recent changes
 		 */
 		function refresh():void;
+		
+		/**
+		 * Retrieve the instance of a loaded plugin (if it exists)
+		 * @param	type
+		 * @return An IDConsolePlugin
+		 */
+		function getPluginInstance(type:Class):IDConsolePlugin;
 	}
 
 }

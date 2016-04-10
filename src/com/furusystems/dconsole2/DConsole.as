@@ -33,6 +33,7 @@
 	import com.furusystems.dconsole2.core.output.ConsoleMessageRepeatMode;
 	import com.furusystems.dconsole2.core.output.ConsoleMessageTypes;
 	import com.furusystems.dconsole2.core.persistence.PersistenceManager;
+	import com.furusystems.dconsole2.core.plugins.IDConsolePlugin;
 	import com.furusystems.dconsole2.core.plugins.PluginManager;
 	import com.furusystems.dconsole2.core.references.ReferenceManager;
 	import com.furusystems.dconsole2.core.security.ConsoleLock;
@@ -122,6 +123,8 @@
 		static public const DOCK_TOP:int = 0;
 		static public const DOCK_BOT:int = 1;
 		static public const DOCK_WINDOWED:int = -1;
+		
+		static public var autoComplete:Boolean = true;
 		
 		//} end members
 		//{ Instance
@@ -235,6 +238,10 @@
 		
 		public static function get debugDraw():DebugDraw {
 			return console.debugDraw;
+		}
+		
+		public static function getLogString():String {
+			return console.getLogString();
 		}
 		
 		private function onTextInput(e:TextEvent):void {
@@ -386,6 +393,10 @@
 		
 		private function get output():OutputField {
 			return _mainConsoleView.output;
+		}
+		
+		public function getLogString():String {
+			return logs.rootLog.toString();
 		}
 		
 		private function get scaleHandle():ScaleHandle {
@@ -1154,6 +1165,7 @@
 		}
 		
 		private function doComplete():Boolean {
+			if (!DConsole.autoComplete) return false;
 			var flag:Boolean = false;
 			
 			if (input.text.length < 1 || _overrideCallback != null)
@@ -1645,6 +1657,11 @@
 		
 		public function refresh():void {
 			scopeManager.updateScope();
+		}
+		
+		public function getPluginInstance(type:Class):IDConsolePlugin 
+		{
+			return pluginManager.getPluginByType(type);
 		}
 		
 		public function get messaging():PimpCentral {
